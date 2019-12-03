@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2019 Richard Hughes <richard@hughsie.com> -->
 <component type="firmware">
-  <id>com.synaptics.prometheus.config</id>
-  <name>Prometheus Fingerprint Reader Configuration</name>
-  <summary>Configuration for the Synaptics Prometheus Fingerprint Reader device</summary>
+  <id>com.synaptics.prometheus.firmware</id>
+  <name>Prometheus Fingerprint Reader</name>
+  <summary>Firmware for the Synaptics Prometheus Fingerprint Reader device</summary>
   <description>
     <p>
       Updating the firmware on your fingerprint reader improves performance and adds
@@ -11,25 +11,25 @@
     </p>
   </description>
   <provides>
-    <!-- USB\VID_06CB&PID_00BD-cfg -->
-    <firmware type="flashed">7c5a1e62-38fa-5859-9337-09dbac6377e4</firmware>
+    <!-- USB\VID_06CB&PID_00BD -->
+    <firmware type="flashed">8088f861-6318-5b1e-9ce4-fbddbedb09ac</firmware>
   </provides>
   <requires>
-    <id compare="ge" version="1.3.5">org.freedesktop.fwupd</id>
+    <id compare="ge" version="1.3.6">org.freedesktop.fwupd</id>
   </requires>
   <url type="homepage">https://www.synaptics.com/products/biometrics</url>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>Proprietary</project_license>
   <developer_name>Synaptics Inc.</developer_name>
   <releases>
-	  <release urgency="medium" version="0021" date="2019-12-03">
-      <checksum filename="prometheus-FM-03462-000_IOTA-Rev0021_prod.pkg" target="content"/>
+    <release urgency="medium" version="10.02.3110269" date="2019-12-03">
+      <checksum filename="prometheus-10.02.3110269_prod.pkg" target="content"/>
       <description>
         <p>
           New features and enhancements:
         </p>
         <ul>
-          <li>Support Linux system</li>  
+          <li>Support Linux system</li>   
         </ul>
       </description>
     </release>
@@ -38,7 +38,7 @@
     <category>X-Device</category>
   </categories>
   <custom>
-    <value key="LVFS::UpdateProtocol">com.synaptics.prometheus.config</value>
-    <value key="LVFS::VersionFormat">plain</value>
+    <value key="LVFS::UpdateProtocol">com.synaptics.prometheus</value>
+    <value key="LVFS::VersionFormat">triplet</value>
   </custom>
 </component>
