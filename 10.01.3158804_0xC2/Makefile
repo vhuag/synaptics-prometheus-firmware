@@ -1,0 +1,17 @@
+VENDOR=Synaptics
+PROJECT_NAME=Prometheus
+VERSION=10.01.3158804
+FIRMWARE_FILE=../../binaries/prometheus-10.01.3158804_prod.pkg
+METAINFO_FILE=prometheus.metainfo.xml
+PID=0xC2
+
+all: $(VENDOR)-$(PROJECT_NAME)-$(VERSION)-$(PID).cab
+
+clean:
+	rm -f *.cab *.dfu
+
+check: $(METAINFO_FILE)
+	appstream-util validate-relax $(METAINFO_FILE)
+
+%.cab: $(FIRMWARE_FILE) $(METAINFO_FILE)
+	gcab --create --nopath $@ $(FIRMWARE_FILE) $(METAINFO_FILE)

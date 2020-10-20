@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2019 Richard Hughes <richard@hughsie.com> -->
+<component type="firmware">
+  <id>com.synaptics.prometheus.a2634c4c.config</id>
+  <name>Prometheus Fingerprint Reader Configuration</name>
+  <summary>Configuration for the Synaptics Prometheus Fingerprint Reader device</summary>
+  <description>
+    <p>
+      Updating the firmware on your fingerprint reader improves performance and adds
+      new features.
+    </p>
+  </description>
+  <provides>
+    <!-- USB\VID_06CB&PID_00F9&CFG1_3692&CFG2_000 -->
+    <firmware type="flashed">a2634c4c-b7fe-597a-a06d-88786e018c7c</firmware>
+  </provides>
+  <requires>
+    <id compare="ge" version="1.4.6">org.freedesktop.fwupd</id>
+  </requires>
+  <url type="homepage">https://www.synaptics.com/products/biometrics</url>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>Proprietary</project_license>
+  <developer_name>Synaptics Inc.</developer_name>
+  <releases>
+	  <release urgency="medium" version="0004" date="2020-10-20">
+      <checksum filename="prometheus-FM-03692-000_IOTA-Rev0004_prod.pkg" target="content"/>
+      <description>
+        <p>
+          New features and enhancements:
+        </p>
+        <ul>
+          <li>Support Linux system</li>  
+        </ul>
+      </description>
+    </release>
+  </releases>
+  <categories>
+    <category>X-Device</category>
+  </categories>
+  <custom>
+    <value key="LVFS::UpdateProtocol">com.synaptics.prometheus.config</value>
+    <value key="LVFS::VersionFormat">plain</value>
+  </custom>
+</component>
