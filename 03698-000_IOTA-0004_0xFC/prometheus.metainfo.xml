@@ -22,7 +22,7 @@
   <project_license>Proprietary</project_license>
   <developer_name>Synaptics Inc.</developer_name>
   <releases>
-	  <release urgency="medium" version="0026" date="2020-10-20">
+	  <release urgency="medium" version="0004" date="2020-10-20">
       <checksum filename="prometheus-FM-03698-000_IOTA-Rev0004_prod.pkg" target="content"/>
       <description>
         <p>
