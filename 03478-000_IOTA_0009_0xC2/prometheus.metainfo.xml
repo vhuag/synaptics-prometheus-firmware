@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2019 Richard Hughes <richard@hughsie.com> -->
 <component type="firmware">
-  <id>com.synaptics.prometheus.b70175cb.config</id>
+  <id>com.synaptics.prometheus.0caac339.config</id>
   <name>Prometheus Fingerprint Reader Configuration</name>
   <summary>Configuration for the Synaptics Prometheus Fingerprint Reader device</summary>
   <description>
@@ -11,8 +11,8 @@
     </p>
   </description>
   <provides>
-    <!-- USB\VID_06CB&PID_00C2&CFG1_3478&CFG2_000 -->
-    <firmware type="flashed">b70175cb-aa8b-5b7e-b9b8-fc41cbe43188</firmware>
+    <!-- USB\VID_06CB&PID_00C2&CFG1_3478&CFG2_0 -->
+    <firmware type="flashed">0caac339-742c-5c4c-a100-ee8bfaf6f6da</firmware>
   </provides>
   <requires>
     <id compare="ge" version="1.4.6">org.freedesktop.fwupd</id>
