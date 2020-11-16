@@ -1,25 +1,42 @@
 #!/bin/python
 import os,sys
 import uuid
+import shutil
 
 
 release_date="2020-10-20"
 fm_number=3478
 pid="C2"
-build_path=os.getcwd()+"/build_temp"
+build_path=os.getcwd()+"/.build_temp"
 binary_path=os.getcwd()
 mfw_version=3158804
-updatetype=2
+updatetype=1
 config_id2=0
 config_version=9
 xml_filename="prometheus.metainfo.xml"
 cab_filename="test.cab" #will override later
+
+### update type
+updatetype=input("Enter update type: 1:MFW; 2:IOTA "+"<"+str(updatetype)+">") or str(updatetype)
+if updatetype.isdigit():
+    updatetype=int(updatetype)
+print("type is "+str(updatetype))
+if not (updatetype == 1 or updatetype ==2):
+    print("invalid input")
+    sys.exit()
+
 
 if updatetype==1:
     mfw_filename="prometheus-10.01."+str(mfw_version)+"_prod.pkg"
     print("mfw name= "+mfw_filename)
 elif updatetype==2:
 #prometheus-FM-03478-000_IOTA-Rev0009_prod.pkg
+    config_id2=input("Enter config ID2: "+"<"+str(config_id2)+">") or str(config_id2)
+    if config_id2.isdigit():
+        config_id2=int(config_id2)
+    else:
+        print("input error")
+        sys.exit()    
     mfw_filename="prometheus-FM-%05d-%03d_IOTA-Rev%04d_prod.pkg"%(fm_number,config_id2,config_version)
 mfw_file_fullpath=binary_path+"/"+mfw_filename
 if not os.path.exists(mfw_file_fullpath):
@@ -27,9 +44,10 @@ if not os.path.exists(mfw_file_fullpath):
     sys.exit()
 else:
     print("Successfuly find "+mfw_file_fullpath)
+###
 
+### FM number
 fm_number=input("Enter FM number: "+"<"+str(fm_number)+">") or str(fm_number)
-
 
 if fm_number.isdigit():
     fm_number=int(fm_number)
@@ -47,22 +65,31 @@ if fm_valid ==1:
 else:
     print("invalid FM number")
     sys.exit()
-    
+
+##pid
 pid=input("Enter PID: "+"<"+pid+">") or pid
 
-pid_valid=1
-try:
-    hexval = int(pid, 16)
-except:
+if not len(pid)==2:
     pid_valid=0
-    print("invalid pid")
-if pid_valid ==1 :
-    print("PID is "+pid)
- 
+else:
+    pid_valid=1
+    try:
+        hexval = int(pid, 16)
+    except:
+        pid_valid=0
 
+if pid_valid ==1 :
+        pid=pid.upper()
+        print("PID is "+pid)
+else:
+    print("invalid pid")
+    sys.exit()
+    
+ 
 if os.path.exists(build_path):
-    print("path already exist")
-    exit
+    print("path already exist, delete the folder")
+    shutil.rmtree(build_path, ignore_errors=True)
+    sys.exit()
 else:
     print("ok")
     os.mkdir(build_path)
@@ -181,12 +208,13 @@ str_xml_config=[
 "  </custom>\n"
 "</component>\n"
 ]
-if updatetype==1:
-    for line in str_xml:
-        print(line)
-elif updatetype==2:
-    for line in str_xml_config:
-        print(line)
+
+#if updatetype==1:
+ #   for line in str_xml:
+  #      print(line)
+#elif updatetype==2:
+ #   for line in str_xml_config:
+  #      print(line)
     
 
 file_xml=open(build_path+"/"+xml_filename,"w")
@@ -195,6 +223,8 @@ for line in str_xml:
 file_xml.close()
 
 os.system("gcab --create --nopath "+" "+cab_filename+" "+mfw_file_fullpath+" "+build_path+"/"+xml_filename)
+
+shutil.rmtree(build_path, ignore_errors=True)
 
 
 
