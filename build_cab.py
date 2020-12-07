@@ -9,7 +9,7 @@ fm_number=3478
 pid="C2"
 build_path=os.getcwd()+"/.build_temp"
 binary_path=os.getcwd()
-mfw_version=3158804
+mfw_version=3273255
 updatetype=1
 config_id2=0
 config_version=9
@@ -30,13 +30,37 @@ if updatetype==1:
     mfw_filename="prometheus-10.01."+str(mfw_version)+"_prod.pkg"
     print("mfw name= "+mfw_filename)
 elif updatetype==2:
+    ### FM number
+    fm_number=input("Enter FM number: "+"<"+str(fm_number)+">") or str(fm_number)
+    if fm_number.isdigit():
+        fm_number=int(fm_number)
+    else:
+        print("input error")
+        sys.exit()
+
+    fm_valid=0
+    if fm_number < 10000 and fm_number > 999:
+        print("valid")
+        fm_valid=1
+            
+    if fm_valid ==1:
+        print("FM number is "+str(fm_number))
+    else:
+        print("invalid FM number")
+        sys.exit()
 #prometheus-FM-03478-000_IOTA-Rev0009_prod.pkg
     config_id2=input("Enter config ID2: "+"<"+str(config_id2)+">") or str(config_id2)
     if config_id2.isdigit():
         config_id2=int(config_id2)
     else:
         print("input error")
-        sys.exit()    
+        sys.exit()
+    config_version=input("Enter config version: "+"<"+str(config_version)+">") or str(config_version)
+    if config_version.isdigit():
+        config_version=int(config_version)
+    else:
+        print("input error")
+        sys.exit()
     mfw_filename="prometheus-FM-%05d-%03d_IOTA-Rev%04d_prod.pkg"%(fm_number,config_id2,config_version)
 mfw_file_fullpath=binary_path+"/"+mfw_filename
 if not os.path.exists(mfw_file_fullpath):
@@ -46,25 +70,9 @@ else:
     print("Successfuly find "+mfw_file_fullpath)
 ###
 
-### FM number
-fm_number=input("Enter FM number: "+"<"+str(fm_number)+">") or str(fm_number)
 
-if fm_number.isdigit():
-    fm_number=int(fm_number)
-else:
-    print("input error")
-    sys.exit()
 
-fm_valid=0
-if fm_number < 10000 and fm_number > 999:
-    print("valid")
-    fm_valid=1
-        
-if fm_valid ==1:
-    print("FM number is "+str(fm_number))
-else:
-    print("invalid FM number")
-    sys.exit()
+
 
 ##pid
 pid=input("Enter PID: "+"<"+pid+">") or pid
@@ -105,6 +113,12 @@ if not guid_string=="":
     print("guid src= "+guid_string)
     print("guid= "+guid_result)
     print("guid prefix= "+guid_prefix)
+    if updatetype == 1:
+        id_prefix="0x"+pid
+        print("id prefix= "+id_prefix)
+    elif updatetype == 2:
+        id_prefix="0x"+pid+"_%d_%d"%(fm_number,config_id2)
+        print("id prefix= "+id_prefix)
 
 if updatetype==1:    
     cab_filename="Synaptics-Prometheus-10.01."+str(mfw_version)+"-0x"+pid+".cab"
@@ -118,7 +132,7 @@ str_xml=[
 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 "<!-- Copyright 2019 Richard Hughes <richard@hughsie.com> -->\n"
 "<component type=\"firmware\">\n"
-"  <id>com.synaptics.prometheus."+guid_prefix+".firmware</id>\n"
+"  <id>com.synaptics.prometheus."+id_prefix+".firmware</id>\n"
 "  <name>Prometheus Fingerprint Reader</name>\n"
 "  <summary>Firmware for the Synaptics Prometheus Fingerprint Reader device</summary>\n"
 "  <description>\n"
@@ -166,7 +180,7 @@ str_xml_config=[
 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 "<!-- Copyright 2019 Richard Hughes <richard@hughsie.com> -->\n"
 "<component type=\"firmware\">\n"
-"  <id>com.synaptics.prometheus."+guid_prefix+".config</id>\n"
+"  <id>com.synaptics.prometheus."+id_prefix+".config</id>\n"
 "  <name>Prometheus Fingerprint Reader Configuration</name>\n"
 "  <summary>Configuration for the Synaptics Prometheus Fingerprint Reader device</summary>\n"
 "  <description>\n"
@@ -218,8 +232,12 @@ str_xml_config=[
     
 
 file_xml=open(build_path+"/"+xml_filename,"w")
-for line in str_xml:
-    file_xml.write(line)
+if updatetype == 1:
+    for line in str_xml:
+        file_xml.write(line)
+elif updatetype == 2:
+    for line in str_xml_config:
+        file_xml.write(line)
 file_xml.close()
 
 os.system("gcab --create --nopath "+" "+cab_filename+" "+mfw_file_fullpath+" "+build_path+"/"+xml_filename)
